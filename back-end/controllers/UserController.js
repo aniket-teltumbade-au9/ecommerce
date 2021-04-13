@@ -6,16 +6,18 @@ const jwt = require('jsonwebtoken')
 
 exports.register = (req, res, next) => {
   const { name, email, bio, type, password } = req.body
-  res.send({ body: req.body, file: req.file })
-  /* res.send(req) */
-  /* let hashpass = bcrypt.hashSync(password, 8)
-    UserModel.create({ name, email, bio, type, password: hashpass }, (recordErr, record) => {
-      if (recordErr) {
-        res.send({ err: 'Something went wrong!' })
-      } else {
-        res.send({ msg: 'Registration Successful!' })
-      }
-    }) */
+  const imagepath = `http://${req.headers.host}/public/${req.file.filename}`
+  let hashpass = bcrypt.hashSync(password, 8)
+  UserModel.countDocuments((err, count) => {
+    res.send(count)
+  })
+  /* UserModel.create({ name, email, bio, type, password: hashpass, image: imagepath }, (recordErr, record) => {
+    if (recordErr) {
+      res.send({ err: 'Something went wrong!' })
+    } else {
+      res.send({ msg: 'Registration Successful!' })
+    }
+  }) */
 }
 
 exports.login = (req, res) => {

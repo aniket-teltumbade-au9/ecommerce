@@ -12,13 +12,14 @@ class Register extends Component {
     email: null,
     bio: null,
     password: null,
-    image: null
+    image: null,
+    type: 'Vendor'
   }
   handleInput = e => {
-    e.persist()
     this.setState({
       [e.target.name]: e.target.value
     })
+    console.log(e.target.value)
   }
   handleUpload = e => {
     e.persist()
@@ -28,12 +29,13 @@ class Register extends Component {
   }
   handleSubmit = e => {
     e.preventDefault()
-    const { name, email, bio, password, image } = this.state
+    const { name, email, bio, password, image, type } = this.state
     const formData = new FormData()
     formData.append('image', image)
     formData.append('name', name)
     formData.append('email', email)
     formData.append('bio', bio)
+    formData.append('type', type)
     formData.append('password', password)
     this.props.userRegister(formData)
   }
@@ -80,7 +82,8 @@ class Register extends Component {
               id='Vendor'
               value='Vendor'
               name='type'
-              onChange={this.handleInput}
+              defaultChecked={true}
+              onChange={(e) => this.handleInput(e)}
             />
             <label htmlFor='Vendor' className='light'>
               Vendor
@@ -91,7 +94,7 @@ class Register extends Component {
               id='User'
               value='User'
               name='type'
-              onChange={this.handleInput}
+              onChange={(e) => this.handleInput(e)}
             />
             <label htmlFor='User' className='light'>
               Customer
