@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const db = require('./db')
 const UserRouter = require('./routers/UserRouter')
+const CategoryRouter = require('./routers/categoryRouter')
 
 const app = express()
 
@@ -14,10 +15,13 @@ app.use(express.static('public'))
 const port = process.env.PORT || 8989
 
 db()
+
 app.get('/', function (req, res) {
   res.send('live')
 })
+
 app.use('/user', UserRouter)
+app.use('/category', CategoryRouter)
 
 app.listen(port, function () {
   console.log(`listening on port: ${port}`)

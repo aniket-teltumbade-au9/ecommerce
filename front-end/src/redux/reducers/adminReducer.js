@@ -1,7 +1,8 @@
-import { ALL_USERS } from "../actionTypes"
+import { ALL_USERS, USER_ACTIVATION } from "../actionTypes"
 
 const initialState = {
-  userList: null
+  userList: null,
+  activation: []
 }
 
 const adminReducer = (state = initialState, { type, payload }) => {
@@ -9,6 +10,9 @@ const adminReducer = (state = initialState, { type, payload }) => {
 
     case ALL_USERS:
       return { ...state, userList: payload }
+
+    case USER_ACTIVATION:
+      return { ...state, activation: [...state.activation, payload] }
 
     default:
       return state

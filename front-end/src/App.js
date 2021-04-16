@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import Category from './pages/Category'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import UserList from './pages/UserList'
@@ -49,6 +50,7 @@ class App extends Component {
                 }
               ]} logout={this.handleLogout} />
             <Switch>
+              <Route exact path="/categories" component={Category} />
               <Route exact path="/" component={UserList} />
               <Redirect from="*" to="/" />
             </Switch>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { userList } from '../redux/actions/adminAction'
+import { userActivation, userList } from '../redux/actions/adminAction'
 import '../scss/UserList.scss'
 
 class UserList extends Component {
@@ -8,7 +8,14 @@ class UserList extends Component {
     this.props.userList()
   }
   handleSelect = (email, e) => {
-    console.log(email, e.target.value)
+    const status = e.target.value === "Active" ? true : false
+    console.log(email, status)
+    this.props.userActivation(email, status)
+  }
+  componentDidUpdate = (prevProps, stateProps) => {
+    if (JSON.stringify(prevProps.allUsers) !== JSON.stringify(this.props.allUsers)) {
+      this.props.userList()
+    }
   }
   render() {
     return (
@@ -59,4 +66,4 @@ const mapStateToProps = (storeState) => {
   return { allUsers: storeState.adminState.userList }
 }
 
-export default connect(mapStateToProps, { userList })(UserList)
+export default connect(mapStateToProps, { userList, userActivation })(UserList)

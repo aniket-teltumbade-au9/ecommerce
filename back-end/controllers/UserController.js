@@ -78,7 +78,30 @@ exports.list = (req, res) => {
     else {
       if (doc.type === "Admin") {
         UserModel.find((allerr, alldocs) => {
-          res.send(alldocs)
+          res.send(alldocs.filter((el) => email != el.email))
+        })
+      }
+      else {
+        res.send({ err: "You are not authorized to see this page." })
+      }
+    }
+  })
+}
+exports.activation = (req, res) => {
+  const email = req.email;
+  UserModel.findOne({ email }, (docerr, doc) => {
+    if (docerr) {
+      res.send({ err: 'Something went wrong!' })
+    }
+    else {
+      if (doc.type === "Admin") {
+        UserModel.findOneAndUpdate({ email: req.body.email }, { status: req.body.status }, (updocErr, upDoc) => {
+          if (updocErr) {
+            res.send({ err: 'Something went wrong!' })
+          }
+          else {
+            res.send({ msg: "User Status changed successfully!" })
+          }
         })
       }
       else {
