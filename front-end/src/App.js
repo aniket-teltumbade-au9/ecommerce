@@ -1,34 +1,71 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import UserList from './pages/UserList'
 import { isLoggedin } from './redux/actions/authAction'
+import { userLogout } from './redux/actions/authAction'
+
 
 class App extends Component {
   componentDidMount = () => {
     this.props.isLoggedin()
   }
+  handleLogout = () => {
+    this.props.userLogout()
+  }
   componentDidUpdate = (prevProps, stateProps) => {
-    if (prevProps.logData !== this.props.logData) {
+    if (prevProps.logStatus !== this.props.logStatus) {
       this.props.isLoggedin()
     }
   }
   render() {
-    return this.props.logData === false ? (
+    return this.props.logStatus === false ? (
       <BrowserRouter >
         <Switch>
           <Route exact path="/" component={Register} />
           <Route exact path="/login" component={Login} />
         </Switch>
       </BrowserRouter>
-    ) : <h1>Hey</h1>
+    ) : (
+      this.props.logData ?
+        this.props.logData.msg.type === "Admin" ? (<>
+          <BrowserRouter>
+            <Navbar userData={this.props.logData} menuData={
+              [
+                {
+                  link: '/',
+                  type: 'Home'
+                },
+                {
+                  link: '/categories',
+                  type: 'Categories'
+                },
+                {
+                  link: '/brands',
+                  type: 'Brands'
+                }
+              ]} logout={this.handleLogout} />
+            <Switch>
+              <Route exact path="/" component={UserList} />
+              <Redirect from="*" to="/" />
+            </Switch>
+          </BrowserRouter>
+        </>)
+          : <h1>Loading...</h1>
+        : <h1>Loading...</h1>
+    )
   }
 }
 
 const mapStateToProps = (storeState) => {
-  return { logData: storeState.authState.isAuth }
+  return {
+    logStatus: storeState.authState.isAuth,
+    logData: storeState.authState.userProfile
+  }
 }
 
 
-export default connect(mapStateToProps, { isLoggedin })(App)
+export default connect(mapStateToProps, { isLoggedin, userLogout })(App)

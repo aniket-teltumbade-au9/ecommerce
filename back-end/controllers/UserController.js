@@ -4,20 +4,32 @@ const jwt = require('jsonwebtoken')
 
 
 
-exports.register = (req, res, next) => {
+exports.register = (req, res) => {
   const { name, email, bio, type, password } = req.body
-  const imagepath = `http://${req.headers.host}/public/${req.file.filename}`
-  let hashpass = bcrypt.hashSync(password, 8)
-  UserModel.countDocuments((err, count) => {
-    res.send(count)
-  })
-  /* UserModel.create({ name, email, bio, type, password: hashpass, image: imagepath }, (recordErr, record) => {
-    if (recordErr) {
-      res.send({ err: 'Something went wrong!' })
-    } else {
-      res.send({ msg: 'Registration Successful!' })
+  const imagepath = `http://${req.headers.host}/images/${req.file.filename}`
+  const hashpass = bcrypt.hashSync(password, 8)
+  UserModel.countDocuments({ type: "Admin" }, (err, count) => {
+    if (count === 0) {
+
+      UserModel.create({ name, email, bio, type: "Admin", password: hashpass, image: imagepath, status: true }, (recordErr, record) => {
+        if (recordErr) {
+          res.send({ err: 'Something went wrong!' })
+        } else {
+          res.send({ msg: 'Registration Successful!' })
+        }
+      })
     }
-  }) */
+    else {
+
+      UserModel.create({ name, email, bio, type, password: hashpass, image: imagepath }, (recordErr, record) => {
+        if (recordErr) {
+          res.send({ err: 'Something went wrong!' })
+        } else {
+          res.send({ msg: 'Registration Successful!' })
+        }
+      })
+    }
+  })
 }
 
 exports.login = (req, res) => {
@@ -29,7 +41,12 @@ exports.login = (req, res) => {
         let token = jwt.sign({
           email: erecord.email
         }, process.env.AUTH_PASS_KEY)
-        res.send({ msg: 'Sign In Successful!', authToken: token })
+        if (erecord.status === true) {
+          res.send({ msg: 'Sign In Successful!', authToken: token })
+        }
+        else {
+          res.send({ err: 'Email is not activated yet', authToken: null })
+        }
       }
       else {
         res.send({ err: 'Password doesn\'t match!' })
@@ -48,6 +65,25 @@ exports.profile = (req, res) => {
     }
     else {
       res.send({ msg: doc })
+    }
+  })
+}
+
+exports.list = (req, res) => {
+  const email = req.email
+  UserModel.findOne({ email }, (docerr, doc) => {
+    if (docerr) {
+      res.send({ err: 'Something went wrong!' })
+    }
+    else {
+      if (doc.type === "Admin") {
+        UserModel.find((allerr, alldocs) => {
+          res.send(alldocs)
+        })
+      }
+      else {
+        res.send({ err: "You are not authorized to see this page." })
+      }
     }
   })
 }

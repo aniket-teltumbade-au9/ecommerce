@@ -4,7 +4,6 @@ import { userRegister } from '../redux/actions/authAction'
 import '../scss/Register.scss'
 import { Link } from 'react-router-dom'
 import FormData from 'form-data'
-import fs from 'fs'
 
 class Register extends Component {
   state = {

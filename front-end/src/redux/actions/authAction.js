@@ -2,19 +2,14 @@ import { IS_LOGGEDIN, USER_LOGIN, USER_LOGOUT, USER_REGISTER } from "../actionTy
 import axios, { post } from "axios";
 
 export const userRegister = (body) => async (dispatch) => {
-
-
-
-
   const url = 'http://localhost:8989/user/register';
   const config = {
     headers: {
       'content-type': 'multipart/form-data'
     }
   }
-  const result = post(url, body, config)
-
-  console.log({ ...body })
+  const result = await post(url, body, config)
+  console.log(result)
   dispatch({
     type: USER_REGISTER,
     payload: result.data

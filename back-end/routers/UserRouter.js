@@ -1,11 +1,11 @@
-const { register, login, profile } = require('../controllers/UserController');
+const { register, login, profile, list } = require('../controllers/UserController');
 
 const UserRouter = require('express').Router();
 
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const authVerify = require('../functions/authVerify');
-const DIR = './public/';
+const DIR = './public/images/';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -18,19 +18,12 @@ const storage = multer.diskStorage({
 });
 
 var upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-    }
-  }
+  storage: storage
 });
 
 UserRouter.post('/register', upload.single('image'), register)
 UserRouter.post('/login', login)
 UserRouter.get('/profile', authVerify, profile)
+UserRouter.get('/all', authVerify, list)
 
 module.exports = UserRouter
