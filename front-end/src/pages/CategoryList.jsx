@@ -1,53 +1,49 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { userActivation, userList } from '../redux/actions/adminAction'
+import { categoryActivation, categoryList } from '../redux/actions/categoryAction'
 import '../scss/Table.scss'
 
-class UserList extends Component {
+class CategoryList extends Component {
   componentDidMount = () => {
-    this.props.userList()
+    this.props.categoryList()
   }
-  handleSelect = (email, e) => {
+  handleSelect = (name, e) => {
     const status = e.target.value === "Active" ? true : false
-    console.log(email, status)
-    this.props.userActivation(email, status)
+    console.log(name, status)
+    this.props.categoryActivation(name, status)
   }
   componentDidUpdate = (prevProps, stateProps) => {
-    if (JSON.stringify(prevProps.allUsers) !== JSON.stringify(this.props.allUsers)) {
-      this.props.userList()
+    if (JSON.stringify(prevProps.allcategories) !== JSON.stringify(this.props.allcategories)) {
+      this.props.categoryList()
     }
   }
   render() {
     return (
-      <div className="UserList">
-        <div className="header">Users</div>
+      <div className="categoryList">
+        <div className="header">Categories</div>
 
         <table cellSpacing="0">
           <thead>
             <tr>
               <th>Picture</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {
-              this.props.allUsers ?
-                this.props.allUsers.map((el, index) =>
+              this.props.allcategories ?
+                this.props.allcategories.map((el, index) =>
                   <tr key={index}>
                     <td><img src={`${el.image}`} alt="" /></td>
                     <td>{el.name}</td>
-                    <td>{el.email} </td>
-                    <td>{el.type} </td>
-                    <td>
-                      <div className="select">
+                    <td >
+                      <div className="select" style={{ margin: "auto" }}>
                         <select
                           name="status"
                           defaultValue={el.status === true ? "Active" : "Deactive"}
                           id="standard-select"
-                          onChange={(e) => this.handleSelect(el.email, e)}>
+                          onChange={(e) => this.handleSelect(el.name, e)}>
                           <option value="Active" >Active</option>
                           <option value="Deactive" >Deactive</option>
                         </select>
@@ -67,7 +63,7 @@ class UserList extends Component {
 }
 
 const mapStateToProps = (storeState) => {
-  return { allUsers: storeState.adminState.userList }
+  return { allcategories: storeState.catState.categoryList }
 }
 
-export default connect(mapStateToProps, { userList, userActivation })(UserList)
+export default connect(mapStateToProps, { categoryList, categoryActivation })(CategoryList)

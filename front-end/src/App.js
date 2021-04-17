@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Category from './pages/Category'
+import Brand from './components/Brand'
+import Product from './components/Product'
+import Category from './components/Category'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import UserList from './pages/UserList'
@@ -28,6 +30,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Redirect from="*" to="/" />
         </Switch>
       </BrowserRouter>
     ) : (
@@ -51,12 +54,39 @@ class App extends Component {
               ]} logout={this.handleLogout} />
             <Switch>
               <Route exact path="/categories" component={Category} />
+              <Route exact path="/brands" component={Brand} />
               <Route exact path="/" component={UserList} />
               <Redirect from="*" to="/" />
             </Switch>
           </BrowserRouter>
         </>)
-          : <h1>Loading...</h1>
+          : this.props.logData.msg.type === "Vendor" ? (<>
+            <BrowserRouter>
+              <Navbar userData={this.props.logData} menuData={
+                [
+                  {
+                    link: '/',
+                    type: 'Home'
+                  },
+                  {
+                    link: '/products',
+                    type: 'Products'
+                  },
+                  {
+                    link: '/orders',
+                    type: 'Orders'
+                  }
+                ]} logout={this.handleLogout} />
+              <Switch>
+                <Route exact path="/categories" component={Category} />
+                <Route exact path="/brands" component={Brand} />
+                <Route exact path="/" component={Product} />
+                <Redirect from="*" to="/" />
+              </Switch>
+            </BrowserRouter>
+          </>)
+            : <h1>Loading...</h1>
+
         : <h1>Loading...</h1>
     )
   }

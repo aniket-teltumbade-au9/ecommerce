@@ -26,8 +26,8 @@ const Navbar = (props) => {
                 }}>
               </button>
               <ul className="nav__wrapper" className={`nav__wrapper ${toggle ? "active" : null}`}>
-                {props.menuData.map(el =>
-                  <li className="nav__item"><Link to={el.link}>{el.type}</Link></li>
+                {props.menuData.map((el, index) =>
+                  <li className="nav__item" key={index}><Link to={el.link}>{el.type}</Link></li>
                 )}
               </ul>
             </nav>

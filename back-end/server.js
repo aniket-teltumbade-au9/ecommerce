@@ -4,6 +4,7 @@ const cors = require('cors')
 const db = require('./db')
 const UserRouter = require('./routers/UserRouter')
 const CategoryRouter = require('./routers/categoryRouter')
+const BrandRouter = require('./routers/BrandRouter')
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.get('/', function (req, res) {
 
 app.use('/user', UserRouter)
 app.use('/category', CategoryRouter)
+app.use('/brand', BrandRouter)
 
 app.listen(port, function () {
   console.log(`listening on port: ${port}`)

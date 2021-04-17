@@ -1,7 +1,7 @@
-const CategoryModel = require("../models/categoryModel");
+const BrandModel = require("../models/brandModel");
 const UserModel = require("../models/UserModel");
 
-exports.categoryCreate = (req, res) => {
+exports.brandCreate = (req, res) => {
   const email = req.email;
   const { name } = req.body;
   const imagepath = `http://${req.headers.host}/images/${req.file.filename}`;
@@ -11,12 +11,12 @@ exports.categoryCreate = (req, res) => {
     }
     else {
       if (doc.type === "Admin") {
-        CategoryModel.create({ name, image: imagepath }, (cdocErr, cdoc) => {
+        BrandModel.create({ name, image: imagepath }, (cdocErr, cdoc) => {
           if (cdocErr) {
             res.send({ err: 'Something went wrong!' })
           }
           else {
-            res.send({ msg: "Category created successfully!" })
+            res.send({ msg: "brand created successfully!" })
           }
         })
       }
@@ -26,7 +26,7 @@ exports.categoryCreate = (req, res) => {
     }
   })
 }
-exports.catList = (req, res) => {
+exports.brandList = (req, res) => {
   const email = req.email
   UserModel.findOne({ email }, (docerr, doc) => {
     if (docerr) {
@@ -34,13 +34,13 @@ exports.catList = (req, res) => {
     }
     else {
       if (doc.type === "Admin") {
-        CategoryModel.find((allerr, alldocs) => {
+        BrandModel.find((allerr, alldocs) => {
           res.send(alldocs)
         })
       }
       else if (doc.type === "Vendor") {
-        CategoryModel.find((allerr, alldocs) => {
-          res.send(alldocs.filter(el => el.status === true).map(ele => ele.name))
+        BrandModel.find((allerr, alldocs) => {
+          res.send(alldocs.filter(el => el.status === true).map(el => el.name))
         })
       }
       else {
@@ -49,7 +49,7 @@ exports.catList = (req, res) => {
     }
   })
 }
-exports.catActivation = (req, res) => {
+exports.brandActivation = (req, res) => {
   const email = req.email;
   UserModel.findOne({ email }, (docerr, doc) => {
     if (docerr) {
@@ -57,7 +57,7 @@ exports.catActivation = (req, res) => {
     }
     else {
       if (doc.type === "Admin") {
-        CategoryModel.findOneAndUpdate({ name: req.body.name }, { status: req.body.status }, (updocErr, upDoc) => {
+        BrandModel.findOneAndUpdate({ name: req.body.name }, { status: req.body.status }, (updocErr, upDoc) => {
           if (updocErr) {
             res.send({ err: 'Something went wrong!' })
           }
