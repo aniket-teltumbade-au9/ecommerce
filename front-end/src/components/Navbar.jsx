@@ -41,10 +41,10 @@ const Navbar = (props) => {
               }}
               onClick={props.logout}>
               <div className="profile-pic"
-                style={{ backgroundImage: `url(${props.userData.msg.image})` }}>
+                style={{ backgroundImage: `url(${props.userData.image})` }}>
               </div>
               <div className="profile-name">
-                {props.userData.msg.name}
+                {props.userData.name}
               </div>
             </div>
           </div>

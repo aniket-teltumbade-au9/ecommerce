@@ -61,7 +61,7 @@ export const isLoggedin = () => async (dispatch) => {
     if (result.data.msg) {
       dispatch({
         type: IS_LOGGEDIN,
-        payload: { isAuth: true, userProfile: result.data }
+        payload: { isAuth: true, userProfile: result.data.msg }
       })
     }
   }

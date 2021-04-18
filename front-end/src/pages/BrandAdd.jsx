@@ -35,7 +35,7 @@ class BrandAdd extends Component {
 
           <fieldset>
             <legend>
-              Add New Category
+              Add New Brand
             </legend>
             <label htmlFor='name'>Name:</label>
             <input

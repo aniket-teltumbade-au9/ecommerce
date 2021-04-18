@@ -10,6 +10,8 @@ import Register from './pages/Register'
 import UserList from './pages/UserList'
 import { isLoggedin } from './redux/actions/authAction'
 import { userLogout } from './redux/actions/authAction'
+import ProductList from './pages/ProductList'
+import Landing from './pages/Landing'
 
 
 class App extends Component {
@@ -35,7 +37,7 @@ class App extends Component {
       </BrowserRouter>
     ) : (
       this.props.logData ?
-        this.props.logData.msg.type === "Admin" ? (<>
+        this.props.logData.type === "Admin" ? (<>
           <BrowserRouter>
             <Navbar userData={this.props.logData} menuData={
               [
@@ -60,33 +62,38 @@ class App extends Component {
             </Switch>
           </BrowserRouter>
         </>)
-          : this.props.logData.msg.type === "Vendor" ? (<>
+          : this.props.logData.type === "Vendor" ? (<>
             <BrowserRouter>
               <Navbar userData={this.props.logData} menuData={
                 [
                   {
                     link: '/',
                     type: 'Home'
-                  },
-                  {
-                    link: '/products',
-                    type: 'Products'
-                  },
-                  {
-                    link: '/orders',
-                    type: 'Orders'
                   }
                 ]} logout={this.handleLogout} />
               <Switch>
-                <Route exact path="/categories" component={Category} />
-                <Route exact path="/brands" component={Brand} />
                 <Route exact path="/" component={Product} />
                 <Redirect from="*" to="/" />
               </Switch>
             </BrowserRouter>
           </>)
-            : <h1>Loading...</h1>
 
+            : this.props.logData.type === "User" ? (<>
+              <BrowserRouter>
+                <Navbar userData={this.props.logData} menuData={
+                  [
+                    {
+                      link: '/',
+                      type: 'Home'
+                    }
+                  ]} logout={this.handleLogout} />
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <Redirect from="*" to="/" />
+                </Switch>
+              </BrowserRouter>
+            </>)
+              : <h1>Loading...</h1>
         : <h1>Loading...</h1>
     )
   }

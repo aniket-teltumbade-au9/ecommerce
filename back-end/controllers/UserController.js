@@ -20,14 +20,24 @@ exports.register = (req, res) => {
       })
     }
     else {
-
-      UserModel.create({ name, email, bio, type, password: hashpass, image: imagepath }, (recordErr, record) => {
-        if (recordErr) {
-          res.send({ err: 'Something went wrong!' })
-        } else {
-          res.send({ msg: 'Registration Successful!' })
-        }
-      })
+      if (type === "Vendor") {
+        UserModel.create({ name, email, bio, type, password: hashpass, image: imagepath }, (recordErr, record) => {
+          if (recordErr) {
+            res.send({ err: 'Something went wrong!' })
+          } else {
+            res.send({ msg: 'Registration Successful!' })
+          }
+        })
+      }
+      else {
+        UserModel.create({ name, email, bio, type, password: hashpass, image: imagepath, status: true }, (recordErr, record) => {
+          if (recordErr) {
+            res.send({ err: 'Something went wrong!' })
+          } else {
+            res.send({ msg: 'Registration Successful!' })
+          }
+        })
+      }
     }
   })
 }

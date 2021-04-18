@@ -27,6 +27,10 @@ class ProductList extends Component {
             <tr>
               <th>Picture</th>
               <th>Name</th>
+              <th>Price(Rs.)</th>
+              <th>Quantity(pc.)</th>
+              <th>Brand</th>
+              <th>Catgory</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -37,6 +41,10 @@ class ProductList extends Component {
                   <tr key={index}>
                     <td><img src={`${el.image}`} alt="" /></td>
                     <td>{el.name}</td>
+                    <td>{el.price}</td>
+                    <td>{el.quantity}</td>
+                    <td>{el.brand}</td>
+                    <td>{el.category}</td>
                     <td >
                       <div className="select" style={{ margin: "auto" }}>
                         <select

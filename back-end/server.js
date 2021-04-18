@@ -5,6 +5,7 @@ const db = require('./db')
 const UserRouter = require('./routers/UserRouter')
 const CategoryRouter = require('./routers/categoryRouter')
 const BrandRouter = require('./routers/BrandRouter')
+const ProductRouter = require('./routers/ProductRouter')
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.get('/', function (req, res) {
 app.use('/user', UserRouter)
 app.use('/category', CategoryRouter)
 app.use('/brand', BrandRouter)
+app.use('/product', ProductRouter)
 
 app.listen(port, function () {
   console.log(`listening on port: ${port}`)

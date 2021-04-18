@@ -41,7 +41,7 @@ class CategoryList extends Component {
                       <div className="select" style={{ margin: "auto" }}>
                         <select
                           name="status"
-                          defaultValue={el.status === true ? "Active" : "Deactive"}
+                          value={el.status === true ? "Active" : "Deactive"}
                           id="standard-select"
                           onChange={(e) => this.handleSelect(el.name, e)}>
                           <option value="Active" >Active</option>

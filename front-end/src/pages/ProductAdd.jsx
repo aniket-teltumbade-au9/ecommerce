@@ -20,7 +20,7 @@ class ProductAdd extends Component {
       this.setState({ category: this.props.catItems[0] })
     }
     if (this.props.brandItems) {
-      this.setState({ brandegory: this.props.brandItems[0] })
+      this.setState({ brand: this.props.brandItems[0] })
     }
   }
   handleInput = e => {
@@ -45,7 +45,7 @@ class ProductAdd extends Component {
     formData.append('quantity', quantity)
     formData.append('brand', brand)
     formData.append('category', category)
-    this.props.addCat(formData)
+    this.props.addProduct(formData)
   }
   render() {
     return (
